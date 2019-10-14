@@ -1,26 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import store from './store'
+import Home from './components/Home'
+import SignupFormContainer from './components/SignupFormContainer';
+import {Route, Link} from 'react-router-dom'
+import {Provider} from 'react-redux'
+import LoginFormContainer from './components/LoginFormContainer';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component{
+  render(){
+    return (
+      <Provider store={store}>
+        <div className="App">
+          <header className="header">
+          <button><Link to="/">HOME</Link></button>
+          <button><Link to="/signup">SIGN UP</Link></button>
+          <button><Link to="/login">LOG IN</Link></button>
+
+          </header>
+          <main className='content'>
+          <Route exact path="/" component={Home} />
+          <Route path="/signup" component={SignupFormContainer}/>
+          <Route path="/login" component={LoginFormContainer} />
+          </main>
+        </div>
+      </Provider>
+    );
+  }
 }
 
 export default App;
