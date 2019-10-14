@@ -1,6 +1,7 @@
 import request from 'superagent'
 export const SIGN_UP = 'SIGN_UP'
 export const LOG_IN='LOG_IN'
+export const GET_EVENTS='GET_EVENTS'
 
 const url = 'http://localhost:5555'
 
@@ -40,5 +41,23 @@ export const login=(email, password)=>(dispatch)=>{
         })
         .catch(error=>{
             console.log(error)})
+}
+function getEventsAction(payload) {
+    return {
+        type: GET_EVENTS,
+        payload: payload
+    }
+}
+
+export const getEvents=()=>(dispatch) =>{
+    request
+          .get(`${url}/event`)
+          .then(res=>{
+              const action=getEventsAction(res.body)
+              dispatch(action)
+          })
+          .catch(error=>{
+              console.log(error)
+          })
 }
 
