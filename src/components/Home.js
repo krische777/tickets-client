@@ -32,7 +32,7 @@ class Home extends Component {
             <p>End date:<Moment format="YYYY/MM/DD">
               {event.endDate}
             </Moment></p>
-            <Link to={`/event/${event.id}`}>View all tickets for {event.eventName}</Link>
+            <Link to={`/event/${event.id}/tickets`}>View all tickets for {event.eventName}</Link>
           </div>)}</div>
       </div>
     )

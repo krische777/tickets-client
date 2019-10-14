@@ -2,6 +2,7 @@ import request from 'superagent'
 export const SIGN_UP = 'SIGN_UP'
 export const LOG_IN='LOG_IN'
 export const GET_EVENTS='GET_EVENTS'
+export const GET_TICKETS='GET_TICKETS'
 
 const url = 'http://localhost:5555'
 
@@ -60,4 +61,23 @@ export const getEvents=()=>(dispatch) =>{
               console.log(error)
           })
 }
+function getTicketsAction(payload) {
+      return {
+          type:GET_TICKETS,
+          payload:payload
+      }
+}
+
+export const getTickets=(eventId)=>(dispatch) =>{
+    request
+          .get(`${url}/event/${eventId}/tickets`)
+          .then(res=>{
+              const action=getTicketsAction(res.body)
+              dispatch(action)
+          })
+          .catch(error=>{
+              console.log(error)
+          })
+}
+
 

@@ -6,6 +6,7 @@ import SignupFormContainer from './components/SignupFormContainer';
 import {Route, Link} from 'react-router-dom'
 import {Provider} from 'react-redux'
 import LoginFormContainer from './components/LoginFormContainer';
+import TicketsContainer from './components/TicketsContainer'
 
 class App extends React.Component{
   render(){
@@ -22,6 +23,7 @@ class App extends React.Component{
           <Route exact path="/" component={Home} />
           <Route path="/signup" component={SignupFormContainer}/>
           <Route path="/login" component={LoginFormContainer} />
+          <Route exact path={`/event/:eventId/tickets`} component={TicketsContainer} />
           </main>
         </div>
       </Provider>
