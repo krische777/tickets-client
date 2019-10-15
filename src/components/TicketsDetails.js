@@ -11,7 +11,7 @@ class TicketsDetails extends Component {
     const {eventId} = this.props.match.params;
 
     const {ticketId} = this.props.match.params;
-    console.log('detailed ticket', this.props.getDetailedTicket(eventId, ticketId))
+    //console.log('detailed ticket', this.props.getDetailedTicket(eventId, ticketId))
     this.props.getDetailedTicket(eventId, ticketId)
   }
 
@@ -27,18 +27,31 @@ class TicketsDetails extends Component {
 
     // console.log('Ticket state in render', this.props.ticketState)
     // console.log('event id of event', this.props.match.params.eventId)
-    // console.log('ticket', this.props.ticketState)
-
+    let commentsSection = [];
+    if(Array.isArray(this.props.ticketDetailsState.comments)){
+      commentsSection=this.props.ticketDetailsState.comments;
+    }
+    console.log('commentsSection', commentsSection)
     return (
-      <div>
+      <div className='ticketDetailsContainer'>
         <h1>Ticket {this.props.ticketDetailsState.id} for the event {}</h1>
-          <div>
+          <div className='ticketDetailsClass'>
             <p >Ticket id: {this.props.ticketDetailsState.id} </p>
             <p >Author: {this.props.ticketDetailsState.author} </p>
             <img className='bigImg' src={this.props.ticketDetailsState.picture} alt='pic'/>
             <p>"We calculated that the risk of this ticket being a fraud is XX%"</p>
             <p>Price: {this.props.ticketDetailsState.price} </p>
             <p>Description: {this.props.ticketDetailsState.description} </p>
+            </div>
+
+            <div className='commentContainer'>
+            <h2>Comments:</h2><br /> <br />{commentsSection.map((comment,index)  =>
+          <div  className='commentClass' key={index}>
+            <p >Comment id: {comment.id} </p>
+            <p >Author: {comment.author} </p>
+            <p >Description: {comment.text} </p>
+
+          </div>)}
           </div>
 
       </div>

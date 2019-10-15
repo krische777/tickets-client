@@ -40,7 +40,7 @@ class TicketsContainer extends Component {
         <h1>Available tickets:</h1>
         <p>Click on a ticket to see more details</p>
         <div className='ticketContainer'>{this.props.ticketState.map((ticket,index)  =>
-          <div  onClick={this.onClick} className='ticketClass' key={index}>
+          <div  className='ticketClass' key={index}>
             <p >Ticket id: {ticket.id} </p>
             <p >Author: {ticket.author} </p>
             <img className='img' src={ticket.picture} alt='pic'/> <br />
