@@ -1,9 +1,9 @@
 html, body, #root {
   height: 100%;
 }
-body, #root {
+/* body, #root {
   display: flex;
-}
+} */
 .header {
   padding: 20px;
   color:blue;
@@ -81,7 +81,6 @@ body, #root {
 }
 
 .commentContainer {
-  display:flex;
   flex-wrap:wrap;
   flex: 1 0 auto;
   margin-left:px;
@@ -100,4 +99,5 @@ body, #root {
 .ticketDetailsContainer {
   margin-left:30px;
   margin-right:30px;
+  margin-bottom:30px
 }

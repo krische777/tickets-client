@@ -20,8 +20,7 @@ class TicketsForm extends Component {
         //console.log('eventId to give to backend', this.props.eventId)
         
         event.preventDefault()
-        this.props.addTicket(this.state.picture, this.state.price, this.state.description, 
-                             this.props.loginState.username, this.props.eventId)
+        this.props.addTicket(this.state.picture, this.state.price, this.state.description, this.props.eventId)
         this.setState({
             picture: "",
             price: "",

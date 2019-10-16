@@ -4,7 +4,9 @@ export const LOG_IN = 'LOG_IN'
 export const GET_EVENTS = 'GET_EVENTS'
 export const GET_TICKETS = 'GET_TICKETS'
 export const ADD_TICKET = 'ADD_TICKET'
-export const GET_DETAILED_TICKET='GET_DETAILED_TICKET'
+export const GET_DETAILED_TICKET = 'GET_DETAILED_TICKET'
+export const ADD_COMMENT = 'ADD_COMMENT'
+export const GET_COMMENTS = 'GET_COMMENTS'
 
 const url = 'http://localhost:5555'
 
@@ -91,7 +93,7 @@ function addTicketAction(payload) {
 }
 
 export const addTicket = (ticketPicture, ticketPrice,
-    ticketDescription, ticketAuthor, ticketEventId) => (dispatch, getState) => {
+    ticketDescription, ticketEventId) => (dispatch, getState) => {
         const state = getState()
         const { jwt } = state.loginReducer
 
@@ -100,7 +102,7 @@ export const addTicket = (ticketPicture, ticketPrice,
             .set('Authorization', `Bearer ${jwt}`)
             .send({
                 picture: ticketPicture, price: ticketPrice,
-                description: ticketDescription, author: ticketAuthor, eventId: ticketEventId
+                description: ticketDescription, eventId: ticketEventId
             })
             .then(res => {
                 const action = addTicketAction(res.body)
@@ -122,6 +124,51 @@ export const getDetailedTicket = (eventId, ticketId) => (dispatch) => {
         .get(`${url}/event/${eventId}/tickets/${ticketId}`)
         .then(res => {
             const action = getDetailedTicketAction(res.body)
+            dispatch(action)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+}
+
+function addCommentAction(payload) {
+    return {
+        type: ADD_COMMENT,
+        payload: payload
+    }
+}
+
+export const addComment = (commentText, commentTicketId) => (dispatch, getState) => {
+    const state = getState()
+    const { jwt } = state.loginReducer
+    console.log('ticket id in actions', commentTicketId)
+    console.log('text in comments in actions', commentText)
+
+    request
+        .post(`${url}/comment`)
+        .set('Authorization', `Bearer ${jwt}`)
+        .send({
+            text: commentText, ticketId: commentTicketId
+        })
+        .then(res => {
+            const action = addCommentAction(res.body)
+            dispatch(action)
+        })
+        .catch(console.error)
+}
+
+function getCommentsAction(payload) {
+    return {
+        type: GET_COMMENTS,
+        payload: payload
+    }
+}
+
+export const getComments = (eventId, ticketId) => (dispatch) => {
+    request
+        .get(`${url}/event/${eventId}/tickets/${ticketId}/comment`)
+        .then(res => {
+            const action = getCommentsAction(res.body)
             dispatch(action)
         })
         .catch(error => {
