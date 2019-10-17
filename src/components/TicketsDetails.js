@@ -65,6 +65,7 @@ class TicketsDetails extends Component {
   }
 
   render() {
+    const currentUser = JSON.parse(localStorage.getItem('user')).username
       return (
         <div className='ticketDetailsContainer'>
           <h1>Ticket {this.props.ticketDetailsState.id} for the event {}</h1>
@@ -74,11 +75,11 @@ class TicketsDetails extends Component {
             <p>"We calculated that the risk of this ticket being a fraud is {this.props.fraudriskState}%"</p>
 
             {(() => {
-              if (this.props.ticketDetailsState.author === this.props.loginState.username) {
+              if (this.props.ticketDetailsState.author === currentUser) {
                 return (
                   <div>Picture: <ContentEditable
                     html={this.state.picture} // innerHTML of the editable div
-                    disabled={!(this.props.ticketDetailsState.author === this.props.loginState.username)}       // use true to disable editing
+                    disabled={!(this.props.ticketDetailsState.author === currentUser)}       // use true to disable editing
                     onChange={this.handlePictureChange} // handle innerHTML change
                     onBlur={this.handleEdit}
                   /></div>
@@ -92,13 +93,13 @@ class TicketsDetails extends Component {
 
             <div>Price: <ContentEditable
               html={this.state.price} // innerHTML of the editable div
-              disabled={!(this.props.ticketDetailsState.author === this.props.loginState.username)}       // use true to disable editing
+              disabled={!(this.props.ticketDetailsState.author === currentUser)}       // use true to disable editing
               onChange={this.handlePriceChange} // handle innerHTML change
               onBlur={this.handleEdit}
             /></div>
             <div>Description: <ContentEditable
               html={this.state.description} // innerHTML of the editable div
-              disabled={!(this.props.ticketDetailsState.author === this.props.loginState.username)}       // use true to disable editing
+              disabled={!(this.props.ticketDetailsState.author === currentUser)}       // use true to disable editing
               onChange={this.handleDescriptionChange} // handle innerHTML change
               onBlur={this.handleEdit}
             />

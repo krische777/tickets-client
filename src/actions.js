@@ -1,4 +1,5 @@
 import request from 'superagent'
+import { authHeader } from './helpers/auth-header';
 export const SIGN_UP = 'SIGN_UP'
 export const LOG_IN = 'LOG_IN'
 export const GET_EVENTS = 'GET_EVENTS'
@@ -9,7 +10,6 @@ export const ADD_COMMENT = 'ADD_COMMENT'
 export const GET_COMMENTS = 'GET_COMMENTS'
 export const GET_FRAUDRISK = 'GET_FRAUDRISK'
 export const UPDATE_TICKET = 'UPDATE_TICKET'
-
 
 const url = 'http://localhost:5555'
 
@@ -44,6 +44,7 @@ export const login = (email, password) => (dispatch) => {
         .post(`${url}/login`)
         .send({ email, password })
         .then(res => {
+            localStorage.setItem('user', JSON.stringify(res.body));
             const action = loginAction(res.body)
             dispatch(action)
         })
@@ -96,13 +97,13 @@ function addTicketAction(payload) {
 }
 
 export const addTicket = (ticketPicture, ticketPrice,
-    ticketDescription, ticketEventId) => (dispatch, getState) => {
-        const state = getState()
-        const { jwt } = state.loginReducer
+    ticketDescription, ticketEventId) => (dispatch) => {
+        // const state = getState()
+        // const { jwt } = state.loginReducer
 
         request
             .post(`${url}/ticket`)
-            .set('Authorization', `Bearer ${jwt}`)
+            .set(authHeader())
             .send({
                 picture: ticketPicture, price: ticketPrice,
                 description: ticketDescription, eventId: ticketEventId
@@ -141,15 +142,15 @@ function addCommentAction(payload) {
     }
 }
 
-export const addComment = (commentText, commentTicketId) => (dispatch, getState) => {
-    const state = getState()
-    const { jwt } = state.loginReducer
-    console.log('ticket id in actions', commentTicketId)
-    console.log('text in comments in actions', commentText)
+export const addComment = (commentText, commentTicketId) => (dispatch) => {
+    // const state = getState()
+    // const { jwt } = state.loginReducer
+    // console.log('ticket id in actions', commentTicketId)
+    // console.log('text in comments in actions', commentText)
 
     request
         .post(`${url}/comment`)
-        .set('Authorization', `Bearer ${jwt}`)
+        .set(authHeader())
         .send({
             text: commentText, ticketId: commentTicketId
         })
@@ -205,12 +206,12 @@ function updateTicketAction(payload) {
     }
 }
 
-export const updateTicket = (ticketId, description, price, picture) => (dispatch, getState) => {
-    const state = getState()
-    const { jwt } = state.loginReducer
+export const updateTicket = (ticketId, description, price, picture) => (dispatch) => {
+    // const state = getState()
+    // const { jwt } = state.loginReducer
     request
         .put(`${url}/ticket/${ticketId}`)
-        .set('Authorization', `Bearer ${jwt}`)
+        .set(authHeader())
         .send({
             description: description, price: price, picture: picture
         })

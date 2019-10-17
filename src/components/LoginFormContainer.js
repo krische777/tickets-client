@@ -7,6 +7,16 @@ import {Redirect} from 'react-router-dom'
 class LoginFormContainer extends Component {
   state = { email: '', password: '' }
 
+
+  constructor(props) {
+    super(props);
+    console.log('logging out ..')
+    console.log('before logout user ..', localStorage.getItem('user'))
+    // remove user from local storage to log user out
+    localStorage.removeItem('user');
+    console.log('after logout user ..', localStorage.getItem('user'))
+}
+
   onSubmit = (event) => {
     event.preventDefault()
     this.props.login(this.state.email, this.state.password)
@@ -24,7 +34,7 @@ class LoginFormContainer extends Component {
 
   render() {
     return (
-      (this.props.loginReducer.jwt) ? 
+      (localStorage.getItem('user')) ? 
         <Redirect to='/'/>
       :
         <div>

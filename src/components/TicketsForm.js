@@ -15,10 +15,7 @@ class TicketsForm extends Component {
             [event.target.name]:event.target.value
         })
     }
-    onSubmit=(event)=>{
-        //console.log('username on submit', this.props.loginState.username)
-        //console.log('eventId to give to backend', this.props.eventId)
-        
+    onSubmit=(event)=>{        
         event.preventDefault()
         this.props.addTicket(this.state.picture, this.state.price, this.state.description, this.props.eventId)
         this.setState({
