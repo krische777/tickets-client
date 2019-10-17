@@ -10,20 +10,20 @@ class TicketsDetails extends Component {
   state = {
     text: "",
     description: '',
-    picture:'',
+    picture: '',
     price: ''
   }
 
-  handleDescriptionChange=(event)=>{
-    this.setState({description:event.target.value})
+  handleDescriptionChange = (event) => {
+    this.setState({ description: event.target.value })
   }
-  handlePictureChange=(event)=>{
-    this.setState({picture:event.target.value})
+  handlePictureChange = (event) => {
+    this.setState({ picture: event.target.value })
   }
-  handlePriceChange=(event)=>{
-    this.setState({price: event.target.value})
+  handlePriceChange = (event) => {
+    this.setState({ price: event.target.value })
   }
-  handleEdit=()=>{
+  handleEdit = () => {
     const { ticketId } = this.props.match.params;
     console.log('on edit', this.state)
     this.props.updateTicket(ticketId, this.state.description, this.state.price, this.state.picture)
@@ -57,15 +57,68 @@ class TicketsDetails extends Component {
 
   componentWillReceiveProps(nextProps) {
     //changing local state without page rerender, this is called before render()
-      this.setState({
-        description: nextProps.ticketDetailsState.description,
-        picture: nextProps.ticketDetailsState.picture,
-        price: String(nextProps.ticketDetailsState.price)
-      })
+    this.setState({
+      description: nextProps.ticketDetailsState.description,
+      picture: nextProps.ticketDetailsState.picture,
+      price: String(nextProps.ticketDetailsState.price)
+    })
   }
 
-  render() {  
-    
+  render() {
+    if (this.props.ticketDetailsState.author === this.props.loginState.username) {
+      return (
+        <div className='ticketDetailsContainer'>
+          <h1>Ticket {this.props.ticketDetailsState.id} for the event {}</h1>
+          <div className='ticketDetailsClass'>
+            <p>Ticket id:{this.props.ticketDetailsState.id}</p>
+            <p >Author: {this.props.ticketDetailsState.author} </p>
+            <p>"We calculated that the risk of this ticket being a fraud is {this.props.fraudriskState}%"</p>
+
+            <div>Picture: <ContentEditable
+              html={this.state.picture} // innerHTML of the editable div
+              disabled={!(this.props.ticketDetailsState.author === this.props.loginState.username)}       // use true to disable editing
+              onChange={this.handlePictureChange} // handle innerHTML change
+              onBlur={this.handleEdit}
+            /></div>
+
+            <div>Price: <ContentEditable
+              html={this.state.price} // innerHTML of the editable div
+              disabled={!(this.props.ticketDetailsState.author === this.props.loginState.username)}       // use true to disable editing
+              onChange={this.handlePriceChange} // handle innerHTML change
+              onBlur={this.handleEdit}
+            /></div>
+            <div>Description: <ContentEditable
+              html={this.state.description} // innerHTML of the editable div
+              disabled={!(this.props.ticketDetailsState.author === this.props.loginState.username)}       // use true to disable editing
+              onChange={this.handleDescriptionChange} // handle innerHTML change
+              onBlur={this.handleEdit}
+            />
+            </div>
+
+          </div>
+
+          <form onSubmit={this.onSubmit} className='commentsForm'>
+            <label>Add comment</label> <br />
+            <textarea rows="4" cols="125" name='text'
+              value={this.state.text}
+              placeholder='put a comment here'
+              onChange={this.onChange} /><br />
+            <button type='submit'>Post comment</button>
+          </form>
+
+          <div className='commentContainer'>
+            <h2>Comments:</h2><br /> <br />{this.props.commentState.map((comment, index) =>
+              <div className='commentClass' key={index}>
+                <p >Comment id: {comment.id} </p>
+                <p >Author: {comment.author} </p>
+                <p >Description: {comment.text} </p>
+
+              </div>)}
+          </div>
+
+        </div>
+      )
+    }
     return (
       <div className='ticketDetailsContainer'>
         <h1>Ticket {this.props.ticketDetailsState.id} for the event {}</h1>
@@ -76,20 +129,9 @@ class TicketsDetails extends Component {
 
           <img className='bigImg' src={this.props.ticketDetailsState.picture} alt='pic' />
 
-          <div>Price: <ContentEditable
-              html={this.state.price} // innerHTML of the editable div
-              disabled={!(this.props.ticketDetailsState.author===this.props.loginState.username)}       // use true to disable editing
-              onChange={this.handlePriceChange} // handle innerHTML change
-              onBlur={this.handleEdit}
-            /></div>
-          <div>Description: <ContentEditable
-              html={this.state.description} // innerHTML of the editable div
-              disabled={!(this.props.ticketDetailsState.author===this.props.loginState.username)}       // use true to disable editing
-              onChange={this.handleDescriptionChange} // handle innerHTML change
-              onBlur={this.handleEdit}
-            />
-          </div>
-          
+          <div>Price: <p>{this.props.ticketDetailsState.price}</p></div>
+          <div>Description: <p>{this.props.ticketDetailsState.description}</p></div>
+
         </div>
 
         <form onSubmit={this.onSubmit} className='commentsForm'>
@@ -100,8 +142,6 @@ class TicketsDetails extends Component {
             onChange={this.onChange} /><br />
           <button type='submit'>Post comment</button>
         </form>
-        
-        {/* ({this.props.ticketDetailsState.author===this.props.loginState.username}) */}
 
         <div className='commentContainer'>
           <h2>Comments:</h2><br /> <br />{this.props.commentState.map((comment, index) =>
@@ -132,6 +172,6 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, {
-  getDetailedTicket,addComment, getComments, 
+  getDetailedTicket, addComment, getComments,
   getFraudrisk, updateTicket
 })(TicketsDetails)
