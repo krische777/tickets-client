@@ -101,3 +101,8 @@ html, body, #root {
   margin-right:30px;
   margin-bottom:30px
 }
+
+.image {
+  border-radius: 50%;
+  width: 50px
+}

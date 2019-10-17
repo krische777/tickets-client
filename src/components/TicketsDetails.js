@@ -65,7 +65,6 @@ class TicketsDetails extends Component {
   }
 
   render() {
-    if (this.props.ticketDetailsState.author === this.props.loginState.username) {
       return (
         <div className='ticketDetailsContainer'>
           <h1>Ticket {this.props.ticketDetailsState.id} for the event {}</h1>
@@ -74,12 +73,22 @@ class TicketsDetails extends Component {
             <p >Author: {this.props.ticketDetailsState.author} </p>
             <p>"We calculated that the risk of this ticket being a fraud is {this.props.fraudriskState}%"</p>
 
-            <div>Picture: <ContentEditable
-              html={this.state.picture} // innerHTML of the editable div
-              disabled={!(this.props.ticketDetailsState.author === this.props.loginState.username)}       // use true to disable editing
-              onChange={this.handlePictureChange} // handle innerHTML change
-              onBlur={this.handleEdit}
-            /></div>
+            {(() => {
+              if (this.props.ticketDetailsState.author === this.props.loginState.username) {
+                return (
+                  <div>Picture: <ContentEditable
+                    html={this.state.picture} // innerHTML of the editable div
+                    disabled={!(this.props.ticketDetailsState.author === this.props.loginState.username)}       // use true to disable editing
+                    onChange={this.handlePictureChange} // handle innerHTML change
+                    onBlur={this.handleEdit}
+                  /></div>
+                )
+              } else {
+                return (
+                  <div><img className='bigImg' src={this.props.ticketDetailsState.picture} alt='pic' /></div>
+                )
+              }
+            })()}
 
             <div>Price: <ContentEditable
               html={this.state.price} // innerHTML of the editable div
@@ -118,44 +127,6 @@ class TicketsDetails extends Component {
 
         </div>
       )
-    }
-    return (
-      <div className='ticketDetailsContainer'>
-        <h1>Ticket {this.props.ticketDetailsState.id} for the event {}</h1>
-        <div className='ticketDetailsClass'>
-          <p>Ticket id:{this.props.ticketDetailsState.id}</p>
-          <p >Author: {this.props.ticketDetailsState.author} </p>
-          <p>"We calculated that the risk of this ticket being a fraud is {this.props.fraudriskState}%"</p>
-
-          <img className='bigImg' src={this.props.ticketDetailsState.picture} alt='pic' />
-
-          <div>Price: <p>{this.props.ticketDetailsState.price}</p></div>
-          <div>Description: <p>{this.props.ticketDetailsState.description}</p></div>
-
-        </div>
-
-        <form onSubmit={this.onSubmit} className='commentsForm'>
-          <label>Add comment</label> <br />
-          <textarea rows="4" cols="125" name='text'
-            value={this.state.text}
-            placeholder='put a comment here'
-            onChange={this.onChange} /><br />
-          <button type='submit'>Post comment</button>
-        </form>
-
-        <div className='commentContainer'>
-          <h2>Comments:</h2><br /> <br />{this.props.commentState.map((comment, index) =>
-            <div className='commentClass' key={index}>
-              <p >Comment id: {comment.id} </p>
-              <p >Author: {comment.author} </p>
-              <p >Description: {comment.text} </p>
-
-            </div>)}
-        </div>
-
-      </div>
-    )
-
   }
 }
 

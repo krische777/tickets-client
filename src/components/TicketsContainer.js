@@ -17,7 +17,7 @@ class TicketsContainer extends Component {
   render() {
 
    // console.log('ticket', this.props.ticketState)
-
+    console.log('fraud color', this.props.ticketState)
 
     return (
       <div>
@@ -31,11 +31,28 @@ class TicketsContainer extends Component {
             {/* <p>"We calculated that the risk of this ticket being a fraud is XX%"</p> */}
 
             <Link to={`/event/${this.props.match.params.eventId}/tickets/${ticket.id}`}>Click here to view details for the ticket</Link>
+            
 
-            {/* <div>
-            <p>Price: {ticket.price} </p>
-            <p>Description: {ticket.description} </p>
-            </div> */}
+ {(() => {
+   if (ticket.fraudRate<parseInt(15)) {
+    return (<div>
+       <img className='image' src='http://d2qsfz7lafswjr.cloudfront.net/thumbcache/314x314/301/261714a9-6b94-4245-9bc4-85e2b5145277.gif' alt='pic'/> <br />
+       </div>)
+  } else if (ticket.fraudRate>=parseInt(15)&&ticket.fraudRate<parseInt(50)) {
+    return (
+      <div>
+        <img className='image' src='https://www.pinclipart.com/picdir/middle/33-330310_snowboarding-clip-art-green-circle-logo-transparent-png.png' alt='pic'/> <br />
+      </div>
+    )
+  } else {
+    return (
+      <div>      
+        <img className='image' src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Red_Circle%28small%29.svg/480px-Red_Circle%28small%29.svg.png' alt='pic'/> <br />
+      </div>
+    )
+  }
+})()}
+       
           </div>)}
           </div>
 

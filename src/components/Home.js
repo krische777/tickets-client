@@ -11,7 +11,7 @@ class Home extends Component {
   }
 
   render() {
-    console.log(this.props.eventState)
+    console.log('helooooooooooooooooooo', this.props.eventState)
     //<Link to={`/event/${event.id}`}>View all tickets for {event.eventName}</Link>
 
     return (
