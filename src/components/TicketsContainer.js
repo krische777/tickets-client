@@ -14,25 +14,9 @@ class TicketsContainer extends Component {
     this.props.getTickets(eventId)
   }
 
-  // onClick = (event)=>{
-  //   //console.log('event target', event.target)
-  //   event.preventDefault()
-  //   this.setState({
-  //     //[event.target]
-  //      hidediv: true
-  //    });
-  //  }
-   //<div hidden = {!this.state.hidediv}>
-
   render() {
 
-    //console.log('Ticket state in render in TicketsContainer', this.props.ticketState)
-    //console.log('event id of event', this.props.match.params.eventId)
    // console.log('ticket', this.props.ticketState)
-
-    //<Link to={`/event/${event.id}`}>View all tickets for {event.eventName}</Link>
-            //({this.props.match.params.eventId}=={this.props.ticketState.ticket.eventId})?
-    //const filteredTickets = this.props.ticketState.filter(ticket => ticket.eventId==this.props.match.params.eventId);
 
 
     return (

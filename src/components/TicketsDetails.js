@@ -1,23 +1,42 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { getDetailedTicket } from '../actions'
-import { addComment, getComments } from '../actions'
+import { getDetailedTicket, updateTicket } from '../actions'
+import { addComment, getComments, getFraudrisk } from '../actions'
+import ContentEditable from 'react-contenteditable'
 
 class TicketsDetails extends Component {
 
   state = {
-    text: ""
+    text: "",
+    description: '',
+    picture:'',
+    price: ''
+  }
+
+  handleDescriptionChange=(event)=>{
+    this.setState({description:event.target.value})
+  }
+  handlePictureChange=(event)=>{
+    this.setState({picture:event.target.value})
+  }
+  handlePriceChange=(event)=>{
+    this.setState({price: event.target.value})
+  }
+  handleEdit=()=>{
+    const { ticketId } = this.props.match.params;
+    console.log('on edit', this.state)
+    this.props.updateTicket(ticketId, this.state.description, this.state.price, this.state.picture)
   }
 
   componentDidMount() {
-    //console.log('event id in comp did mount', this.props.match.params.eventId)
+    console.log('componentDidMount Before setState', this.props.ticketDetailsState.description)
     const { eventId } = this.props.match.params;
-
     const { ticketId } = this.props.match.params;
-    //console.log('detailed ticket', this.props.getDetailedTicket(eventId, ticketId))
+
     this.props.getDetailedTicket(eventId, ticketId)
     this.props.getComments(eventId, ticketId)
+    this.props.getFraudrisk(eventId, ticketId)
   }
 
   onChange = (event) => {
@@ -28,11 +47,7 @@ class TicketsDetails extends Component {
   }
 
   onSubmit = (event) => {
-    //console.log('username on submit', this.props.loginState.username)
-    //console.log('eventId to give to backend', this.props.eventId)
     event.preventDefault()
-    console.log('ticket id in comments', this.props.match.params.ticketId)
-    console.log('text in comments', this.state.text)
 
     this.props.addComment(this.state.text, this.props.match.params.ticketId)
     this.setState({
@@ -40,28 +55,53 @@ class TicketsDetails extends Component {
     })
   }
 
-  render() {
+  componentWillReceiveProps(nextProps) {
+    //changing local state without page rerender, this is called before render()
+      this.setState({
+        description: nextProps.ticketDetailsState.description,
+        picture: nextProps.ticketDetailsState.picture,
+        price: String(nextProps.ticketDetailsState.price)
+      })
+  }
 
-    // console.log('Ticket state in render', this.props.ticketState)
-    // console.log('event id of event', this.props.match.params.eventId)
-
-    // let commentsSection = [];
-    // if(Array.isArray(this.props.ticketDetailsState.comments)){
-    //   commentsSection=this.props.ticketDetailsState.comments;
-    // }
-
-    //console.log('commentsSection', commentsSection)
+  render() {  
+    
     return (
       <div className='ticketDetailsContainer'>
         <h1>Ticket {this.props.ticketDetailsState.id} for the event {}</h1>
         <div className='ticketDetailsClass'>
-          <p >Ticket id: {this.props.ticketDetailsState.id} </p>
+          <p>Ticket id:{this.props.ticketDetailsState.id}</p>
           <p >Author: {this.props.ticketDetailsState.author} </p>
+          <p>"We calculated that the risk of this ticket being a fraud is {this.props.fraudriskState}%"</p>
+
           <img className='bigImg' src={this.props.ticketDetailsState.picture} alt='pic' />
-          <p>"We calculated that the risk of this ticket being a fraud is XX%"</p>
-          <p>Price: {this.props.ticketDetailsState.price} </p>
-          <p>Description: {this.props.ticketDetailsState.description} </p>
+
+          <div>Price: <ContentEditable
+              html={this.state.price} // innerHTML of the editable div
+              disabled={!(this.props.ticketDetailsState.author===this.props.loginState.username)}       // use true to disable editing
+              onChange={this.handlePriceChange} // handle innerHTML change
+              onBlur={this.handleEdit}
+            /></div>
+          <div>Description: <ContentEditable
+              html={this.state.description} // innerHTML of the editable div
+              disabled={!(this.props.ticketDetailsState.author===this.props.loginState.username)}       // use true to disable editing
+              onChange={this.handleDescriptionChange} // handle innerHTML change
+              onBlur={this.handleEdit}
+            />
+          </div>
+          
         </div>
+
+        <form onSubmit={this.onSubmit} className='commentsForm'>
+          <label>Add comment</label> <br />
+          <textarea rows="4" cols="125" name='text'
+            value={this.state.text}
+            placeholder='put a comment here'
+            onChange={this.onChange} /><br />
+          <button type='submit'>Post comment</button>
+        </form>
+        
+        {/* ({this.props.ticketDetailsState.author===this.props.loginState.username}) */}
 
         <div className='commentContainer'>
           <h2>Comments:</h2><br /> <br />{this.props.commentState.map((comment, index) =>
@@ -73,16 +113,6 @@ class TicketsDetails extends Component {
             </div>)}
         </div>
 
-        <form onSubmit={this.onSubmit} className='commentsForm'>
-          <label>Add comment</label> <br />
-          <textarea rows="4" cols="125" name='text'
-            value={this.state.text}
-            placeholder='put a comment here'
-            onChange={this.onChange} /><br />
-          <button type='submit'>Post comment</button>
-        </form>
-
-
       </div>
     )
 
@@ -90,15 +120,18 @@ class TicketsDetails extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log('comments state in cont', state.commentReducer)
+  console.log('comments state in cont', state)
 
   return {
     ticketDetailsState: state.ticketDetailsReducer,
     eventState: state.eventReducer,
     loginState: state.loginReducer,
-    commentState: state.commentReducer
-
+    commentState: state.commentReducer,
+    fraudriskState: state.fraudriskReducer
   }
 }
 
-export default connect(mapStateToProps, { getDetailedTicket, addComment, getComments })(TicketsDetails)
+export default connect(mapStateToProps, {
+  getDetailedTicket,addComment, getComments, 
+  getFraudrisk, updateTicket
+})(TicketsDetails)

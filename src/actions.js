@@ -7,6 +7,9 @@ export const ADD_TICKET = 'ADD_TICKET'
 export const GET_DETAILED_TICKET = 'GET_DETAILED_TICKET'
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const GET_COMMENTS = 'GET_COMMENTS'
+export const GET_FRAUDRISK = 'GET_FRAUDRISK'
+export const UPDATE_TICKET = 'UPDATE_TICKET'
+
 
 const url = 'http://localhost:5555'
 
@@ -169,6 +172,50 @@ export const getComments = (eventId, ticketId) => (dispatch) => {
         .get(`${url}/event/${eventId}/tickets/${ticketId}/comment`)
         .then(res => {
             const action = getCommentsAction(res.body)
+            dispatch(action)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+}
+
+function getFraudriskAction(payload) {
+    return {
+        type: GET_FRAUDRISK,
+        payload: payload
+    }
+}
+
+export const getFraudrisk = (eventId, ticketId) => (dispatch) => {
+    request
+        .get(`${url}/event/${eventId}/tickets/${ticketId}/fraudrisk`)
+        .then(res => {
+            const action = getFraudriskAction(res.body)
+            dispatch(action)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+}
+
+function updateTicketAction(payload) {
+    return {
+        type: UPDATE_TICKET,
+        payload: payload
+    }
+}
+
+export const updateTicket = (ticketId, description, price, picture) => (dispatch, getState) => {
+    const state = getState()
+    const { jwt } = state.loginReducer
+    request
+        .put(`${url}/ticket/${ticketId}`)
+        .set('Authorization', `Bearer ${jwt}`)
+        .send({
+            description: description, price: price, picture: picture
+        })
+        .then(res => {
+            const action = updateTicketAction(res.body)
             dispatch(action)
         })
         .catch(error => {

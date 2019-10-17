@@ -5,6 +5,7 @@ import eventReducer from './eventReducer'
 import ticketReducer from './ticketReducer'
 import ticketDetailsReducer from './ticketDetailsReducer'
 import commentReducer from './commentReducer'
+import fraudriskReducer from './fraudriskReducer'
 
 export default combineReducers({
   signupReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
   eventReducer,
   ticketReducer,
   ticketDetailsReducer,
-  commentReducer
+  commentReducer,
+  fraudriskReducer
 })
