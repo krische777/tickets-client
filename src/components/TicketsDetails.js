@@ -65,7 +65,9 @@ class TicketsDetails extends Component {
   }
 
   render() {
-    const currentUser = JSON.parse(localStorage.getItem('user')).username
+    const currentUser=JSON.parse(localStorage.getItem('user'));
+
+    if (currentUser) {currentUser=currentUser.username}
       return (
         <div className='ticketDetailsContainer'>
           <h1>Ticket {this.props.ticketDetailsState.id} for the event {}</h1>
