@@ -36,12 +36,13 @@ class TicketsContainer extends Component {
  {(() => {
    if (ticket.fraudRate<parseInt(15)) {
     return (<div>
-       <img className='image' src='http://d2qsfz7lafswjr.cloudfront.net/thumbcache/314x314/301/261714a9-6b94-4245-9bc4-85e2b5145277.gif' alt='pic'/> <br />
+      
+       <img className='image' src='https://www.pinclipart.com/picdir/middle/33-330310_snowboarding-clip-art-green-circle-logo-transparent-png.png' alt='pic'/> <br />
        </div>)
   } else if (ticket.fraudRate>=parseInt(15)&&ticket.fraudRate<parseInt(50)) {
     return (
       <div>
-        <img className='image' src='https://www.pinclipart.com/picdir/middle/33-330310_snowboarding-clip-art-green-circle-logo-transparent-png.png' alt='pic'/> <br />
+        <img className='image' src='http://d2qsfz7lafswjr.cloudfront.net/thumbcache/314x314/301/261714a9-6b94-4245-9bc4-85e2b5145277.gif' alt='pic'/> <br />
       </div>
     )
   } else {
