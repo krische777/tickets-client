@@ -6,19 +6,16 @@ export default class SginupForm extends Component {
       <div>
         <h2>Create new account</h2>
         <form onSubmit={this.props.onSubmit}>
-          <label >
-            Full Name:<br />
+          <label >Full Name:</label>
             <input type="text" name="fullName" value={this.props.values.fullName} onChange={this.props.onChange} />
-          </label><br />
-          <label >
-            Email:<br />
+          <br />
+          <label >Email:</label>
             <input type="text" name='email' value={this.props.values.email} onChange={this.props.onChange} />
-          </label><br />
-          <label >
-            Password:<br />
+          <br />
+          <label >Password:</label>
             <input type="text" name='password' value={this.props.values.password} onChange={this.props.onChange} />
-          </label><br />
-          <input type="submit" value="Signup" />
+          <br />
+          <button type='submit'>Sign Up</button>
         </form>
       </div>
     )

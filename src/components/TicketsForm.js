@@ -27,7 +27,7 @@ class TicketsForm extends Component {
 
     render() {
         return (
-            <form onSubmit={this.onSubmit} className='ticketsForm'>
+            <form className="newform" onSubmit={this.onSubmit} className='ticketsForm'>
                 <label>Picture</label>
                 <input name='picture'
                     value={this.state.picture}

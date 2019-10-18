@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getEvents } from '../actions'
+import EventsForm from './EventsForm'
 import Moment from "react-moment";
 
 class Home extends Component {
@@ -25,6 +26,7 @@ class Home extends Component {
         <div className='eventConatiner'>{this.props.eventState.map((event, index)=>
           <div className='eventClass' key={index}><p>Event id: {event.id}</p>
             <p>Event: {event.eventName}</p>
+            <p>Description: {event.description}</p>
             <img className='img' src={event.picture} alt='pic' />
             <p>Start date: <Moment format="YYYY/MM/DD">
               {event.startDate}
@@ -34,6 +36,8 @@ class Home extends Component {
             </Moment></p>
             <Link to={`/event/${event.id}/tickets`}>View all tickets for {event.eventName}</Link>
           </div>)}</div>
+
+        <EventsForm />
       </div>
     )
   }

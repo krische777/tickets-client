@@ -6,14 +6,12 @@ export default class LoginForm extends Component {
       <div>
         <h3>Log into your account</h3>
         <form onSubmit={this.props.onSubmit}>
-          <label>
-            Email:<br/>
+          <label>Email:</label>
           <input type="text" name='email' value={this.props.values.email} onChange={this.props.onChange}/>
-          </label><br/>
-          <label>
-            Password:<br/>
+          <br/>
+          <label>Password:</label>
           <input type="text" name='password'  value={this.props.values.password} onChange={this.props.onChange}/>
-          </label><br/>
+          <br/>
           <button type='submit'>Login</button>
         </form>
       </div>

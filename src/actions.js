@@ -10,6 +10,7 @@ export const ADD_COMMENT = 'ADD_COMMENT'
 export const GET_COMMENTS = 'GET_COMMENTS'
 export const GET_FRAUDRISK = 'GET_FRAUDRISK'
 export const UPDATE_TICKET = 'UPDATE_TICKET'
+export const ADD_EVENT='ADD_EVENT'
 
 const url = 'http://localhost:5555'
 
@@ -223,3 +224,30 @@ export const updateTicket = (ticketId, description, price, picture) => (dispatch
             console.log(error)
         })
 }
+
+function addEventAction(payload) {
+    return {
+        type: ADD_EVENT,
+        payload: payload
+    }
+}
+
+export const addEvent = (eventName, eventPicture,
+    eventStartDate, eventEndDate, eventDescription) => (dispatch) => {
+        // const state = getState()
+        // const { jwt } = state.loginReducer
+
+        request
+            .post(`${url}/event`)
+            .set(authHeader())
+            .send({
+                eventName: eventName, picture: eventPicture,
+                startDate: eventStartDate, endDate: eventEndDate,
+                description:eventDescription
+            })
+            .then(res => {
+                const action = addEventAction(res.body)
+                dispatch(action)
+            })
+            .catch(console.error)
+    }

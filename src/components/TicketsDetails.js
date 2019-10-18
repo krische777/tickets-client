@@ -107,9 +107,9 @@ class TicketsDetails extends Component {
 
           </div>
 
-          <form onSubmit={this.onSubmit} className='commentsForm'>
+          <form className="newform" onSubmit={this.onSubmit} className='commentsForm'>
             <label>Add comment</label> <br />
-            <textarea rows="4" cols="125" name='text'
+            <textarea rows="4" cols="90" name='text'
               value={this.state.text}
               placeholder='put a comment here'
               onChange={this.onChange} /><br />
